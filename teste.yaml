@@ -1,0 +1,46 @@
+# Add or change a parameter group, in this case setting auto_increment_increment to 42 * 1024
+- rds_param_group:
+  state: present
+  name: norwegian-blue
+  description: 'My Fancy Ex Parrot Group'
+  engine: 'mysql5.6'
+  params:
+      auto_increment_increment: "42K"
+  tags:
+      Environment: production
+      Application: parrot
+
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+- name: create minimal aurora instance in default VPC and default subnet group
+  rds_instance:
+    engine: aurora
+    db_instance_identifier: ansible-test-aurora-db-instance
+    instance_type: db.t2.small
+    password: "{{ password }}"
+    username: "{{ username }}"
+    cluster_id: ansible-test-cluster  # This cluster must exist - see rds_cluster to manage it
+
+
+
+    tasks:
+      - name: Provision RDS
+        rds:
+          command: create
+          instance_name: ANSIBLEDataloading
+          db_engine: 'mysql5.7.26'
+          size: 10
+          instance_type: db.t3.micro
+          username: xxxxx
+          password: xxxxx
+          tags:
+            Environment: Dataloading
+            Application: sims
+        register: ANSIBLEDataloading
+
+
+
+ # Create a simple s3 bucket
+- s3_bucket:
+  name: mys3bucket
+  state: present
+      
