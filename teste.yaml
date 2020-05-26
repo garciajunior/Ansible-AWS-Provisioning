@@ -44,3 +44,12 @@
   name: mys3bucket
   state: present
       
+
+- name: New instance with public IP
+  ec2_instance: 
+    profile: personal
+    region: "{{aws_region}}"
+    name: "{{my-name}}-test-live"
+    key_name: "{{ key_info.key.name}}"
+    ec2_vpc_subnet: subnet-name
+    security_group: 

@@ -1,0 +1,31 @@
+1 - ssh-keygen -t rsa -b 4096 -f ~/.ssh/my_aws
+
+2 - mkdir -p AWS_Ansible/group_vars/all/
+      cd AWS_Ansible
+      touch playbook.yml
+
+3 - Create Ansible Vault file to store the AWS Access and Secret keys.
+    ansible-vault create group_vars/all/pass.yml
+    New Vault password:
+    Confirm New Vault password: 
+
+4 - Add pass.yml
+    don’t want to provide the password every time, an insecure approach can create the pass.yml
+     file by specifying a hashed password file:
+
+      openssl rand -base64 2048 > vault.pass
+      ansible-vault create group_vars/all/pass.yml --vault-password-file vault.pass
+
+5 - With hashed password file you must specify the vault-password-file argument when running 
+  Ansible playbook and won’t  be asked for the password:
+
+    ansible-playbook playbook.yml --vault-password-file vault.pass
+
+6 - Edit the pass.yml file and create the keys global constants
+    Create the variables ec2_access_key and ec2_secret_key and set the values
+    gathered after user creation (IAM).
+
+      ansible-vault edit group_vars/all/pass.yml 
+        Vault password:
+        ec2_access_key: AAAAAAAAAAAAAABBBBBBBBBBBB                                      
+        ec2_secret_key: afjdfadgf$fgajk5ragesfjgjsfdbtirhf
